@@ -1,9 +1,9 @@
 const cacheName = "migs-moving-cubes-performance-example-1.0.0";
 const contentToCache = [
     "Build/Demo.loader.js",
-    "Build/Demo.framework.js.gz",
-    "Build/Demo.data.gz",
-    "Build/Demo.wasm.gz",
+    "Build/Demo.framework.js",
+    "Build/Demo.data",
+    "Build/Demo.wasm",
     "TemplateData/style.css"
 
 ];
