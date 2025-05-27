@@ -18,6 +18,7 @@ namespace Code
 
         private void OnEnable()
         {
+            Application.targetFrameRate = 500;
             CreateCubes();
             InitializeCubes(_cubes, _velocities);
         }
