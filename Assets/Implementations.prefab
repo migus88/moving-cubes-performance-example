@@ -45,11 +45,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _seed: 123
-  _cubesAmount: 500
+  _cubesAmount: 1000
   _cubePrefab: {fileID: 5587615982180194838, guid: 51c115fff97d04978a9da22ac4803585, type: 3}
   _boundaries:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 25, y: 25, z: 25}
+    m_Extent: {x: 15, y: 15, z: 15}
+  _minSpeed: 5
+  _maxSpeed: 10
+--- !u!1 &2989142384579748232
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2212872717648133445}
+  - component: {fileID: 6419550485521417580}
+  m_Layer: 0
+  m_Name: Unity Physics
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2212872717648133445
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989142384579748232}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7907244801199527191}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6419550485521417580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989142384579748232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0be78fa771964fcf80f036eef07ae11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _seed: 123
+  _cubesAmount: 1000
+  _cubePrefab: {fileID: 5587615982180194838, guid: 51c115fff97d04978a9da22ac4803585, type: 3}
+  _boundaries:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 15, y: 15, z: 15}
   _minSpeed: 5
   _maxSpeed: 10
 --- !u!1 &5448395032861358968
@@ -97,11 +149,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _seed: 123
-  _cubesAmount: 500
+  _cubesAmount: 1000
   _cubePrefab: {fileID: 5587615982180194838, guid: 51c115fff97d04978a9da22ac4803585, type: 3}
   _boundaries:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 25, y: 25, z: 25}
+    m_Extent: {x: 15, y: 15, z: 15}
   _minSpeed: 5
   _maxSpeed: 10
 --- !u!1 &5842626817874289541
@@ -149,11 +201,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _seed: 123
-  _cubesAmount: 500
+  _cubesAmount: 1000
   _cubePrefab: {fileID: 5587615982180194838, guid: 51c115fff97d04978a9da22ac4803585, type: 3}
   _boundaries:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 25, y: 25, z: 25}
+    m_Extent: {x: 15, y: 15, z: 15}
   _minSpeed: 5
   _maxSpeed: 10
 --- !u!1 &7481213547272143451
@@ -201,11 +253,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _seed: 123
-  _cubesAmount: 500
+  _cubesAmount: 1000
   _cubePrefab: {fileID: 5587615982180194838, guid: 51c115fff97d04978a9da22ac4803585, type: 3}
   _boundaries:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 25, y: 25, z: 25}
+    m_Extent: {x: 15, y: 15, z: 15}
   _minSpeed: 5
   _maxSpeed: 10
 --- !u!1 &9114932537299578359
@@ -237,6 +289,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2212872717648133445}
   - {fileID: 3817865918917318326}
   - {fileID: 3766974055109061341}
   - {fileID: 1517694442358707689}

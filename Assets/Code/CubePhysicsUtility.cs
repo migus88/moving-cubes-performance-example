@@ -60,20 +60,6 @@ namespace Code
         }
         
         /// <summary>
-        /// Legacy method for 2D boundaries (Rect) to maintain backward compatibility
-        /// </summary>
-        public static Vector3 HandleBoundaryCollisions(Vector3 position, float halfSize, Rect boundaries, ref Vector3 velocity)
-        {
-            // Create a 3D bounds from the 2D rect (with Y bounds from -10 to 10)
-            var bounds = new Bounds(
-                new Vector3((boundaries.xMin + boundaries.xMax) * 0.5f, 0, (boundaries.yMin + boundaries.yMax) * 0.5f),
-                new Vector3(boundaries.width, 20, boundaries.height)
-            );
-            
-            return HandleBoundaryCollisions(position, halfSize, bounds, ref velocity);
-        }
-        
-        /// <summary>
         /// Check for collision between two cubes
         /// </summary>
         public static bool CheckCubeCollision(
