@@ -1,21 +1,13 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Code.UI
 {
     [RequireComponent(typeof(Button))]
-    public class UiVisibilityButton : MonoBehaviour
+    public class UiVisibilityHotkey : MonoBehaviour
     {
         [SerializeField] private KeyCode _toggleKey;
-        [SerializeField] private Button _button;
         [SerializeField] private GameObject[] _visibilityAffectedObjects;
-
-        private void Awake()
-        {
-            _button.onClick.AddListener(ToggleVisibility);
-        }
 
         private void Update()
         {
@@ -24,15 +16,7 @@ namespace Code.UI
                 ToggleVisibility();
             }
         }
-
-        private void OnValidate()
-        {
-            if (!_button)
-            {
-                _button = GetComponent<Button>();
-            }
-        }
-
+        
         private void ToggleVisibility()
         {
             foreach (var obj in _visibilityAffectedObjects)
@@ -44,11 +28,6 @@ namespace Code.UI
                 
                 obj.SetActive(!obj.activeSelf);
             }
-        }
-
-        private void OnDestroy()
-        {
-            _button.onClick.RemoveAllListeners();
         }
     }
 }
