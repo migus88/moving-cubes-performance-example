@@ -1,7 +1,7 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
-namespace Code
+namespace Code.UI
 {
     /// <summary>
     /// Displays the average FPS over a one-second interval using TextMeshPro.

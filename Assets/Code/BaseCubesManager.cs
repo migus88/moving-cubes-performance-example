@@ -12,6 +12,8 @@ namespace Code
         [SerializeField] protected Bounds _boundaries = new(Vector3.zero, new Vector3(15, 15, 15));
         [SerializeField] protected float _minSpeed = 5f;
         [SerializeField] protected float _maxSpeed = 10f;
+        [SerializeField] private float _minSize = 0.5f;
+        [SerializeField] private float _maxSize = 1.3f;
         
         private GameObject[] _cubes;
         private Vector3[] _velocities;
@@ -38,6 +40,10 @@ namespace Code
 
             _cubesAmount = amount;
         }
+        
+        public void SetMinSize(float sizeStr) => _minSize = sizeStr;
+        public void SetMaxSize(float sizeStr) => _maxSize = sizeStr;
+        
 
         protected abstract void InitializeCubes(GameObject[] cubes, Vector3[] velocities);
         protected abstract void OnCubesDestroyed();
@@ -87,7 +93,7 @@ namespace Code
                     meshRenderer = cubeObject.GetComponentInChildren<Renderer>();
                 
                 // Generate random size
-                var size = Random.Range(0.5f, 1.3f);
+                var size = Random.Range(_minSize, _maxSize);
                 cubeObject.transform.localScale = Vector3.one * size;
                 
                 // Generate random color
