@@ -67,6 +67,17 @@ namespace Code
             _cubes = null;
         }
         
+        /// <summary>
+        /// Draw the boundary gizmos in the scene view when the component is enabled
+        /// </summary>
+        private void OnDrawGizmos()
+        {
+            if (enabled)
+            {
+                CubePhysicsUtility.DrawBoundariesGizmo(_boundaries, new Color(0.2f, 0.8f, 0.2f, 0.5f));
+            }
+        }
+        
         private void CreateCubes()
         {
             if (!_cubePrefab)
@@ -125,4 +136,5 @@ namespace Code
         }
     }
 }
+
 

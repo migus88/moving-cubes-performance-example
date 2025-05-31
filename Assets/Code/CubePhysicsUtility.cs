@@ -16,47 +16,40 @@ namespace Code
         }
         
         /// <summary>
+        /// Helper method to handle collision along a single axis
+        /// </summary>
+        private static float HandleAxisBoundary(float position, float halfSize, float minBoundary, float maxBoundary, ref float velocity)
+        {
+            var min = minBoundary + halfSize;
+            var max = maxBoundary - halfSize;
+            
+            if (position < min)
+            {
+                velocity = Mathf.Abs(velocity);
+                return min;
+            }
+
+            if (position > max)
+            {
+                velocity = -Mathf.Abs(velocity);
+                return max;
+            }
+
+            return position;
+        }
+        
+        /// <summary>
         /// Handle collisions with 3D boundaries and update velocity
         /// </summary>
         public static Vector3 HandleBoundaryCollisions(Vector3 position, float halfSize, Bounds boundaries, ref Vector3 velocity)
         {
-            // Handle X boundaries
-            if (position.x - halfSize < boundaries.min.x)
-            {
-                position.x = boundaries.min.x + halfSize;
-                velocity.x = -velocity.x;
-            }
-            else if (position.x + halfSize > boundaries.max.x)
-            {
-                position.x = boundaries.max.x - halfSize;
-                velocity.x = -velocity.x;
-            }
+            var result = position;
             
-            // Handle Y boundaries
-            if (position.y - halfSize < boundaries.min.y)
-            {
-                position.y = boundaries.min.y + halfSize;
-                velocity.y = -velocity.y;
-            }
-            else if (position.y + halfSize > boundaries.max.y)
-            {
-                position.y = boundaries.max.y - halfSize;
-                velocity.y = -velocity.y;
-            }
+            result.x = HandleAxisBoundary(position.x, halfSize, boundaries.min.x, boundaries.max.x, ref velocity.x);
+            result.y = HandleAxisBoundary(position.y, halfSize, boundaries.min.y, boundaries.max.y, ref velocity.y);
+            result.z = HandleAxisBoundary(position.z, halfSize, boundaries.min.z, boundaries.max.z, ref velocity.z);
             
-            // Handle Z boundaries
-            if (position.z - halfSize < boundaries.min.z)
-            {
-                position.z = boundaries.min.z + halfSize;
-                velocity.z = -velocity.z;
-            }
-            else if (position.z + halfSize > boundaries.max.z)
-            {
-                position.z = boundaries.max.z - halfSize;
-                velocity.z = -velocity.z;
-            }
-            
-            return position;
+            return result;
         }
         
         /// <summary>
@@ -70,23 +63,48 @@ namespace Code
             resolvedPosition = position1;
             normal = Vector3.zero;
             
-            // Calculate distance between cube centers
-            var distance = Vector3.Distance(position1, position2);
+            // Check for axis-aligned bounding box (AABB) collision
+            var collisionX = Mathf.Abs(position1.x - position2.x) <= (halfSize1 + halfSize2);
+            var collisionY = Mathf.Abs(position1.y - position2.y) <= (halfSize1 + halfSize2);
+            var collisionZ = Mathf.Abs(position1.z - position2.z) <= (halfSize1 + halfSize2);
             
-            var minDistance = halfSize1 + halfSize2;
-            
-            // No collision if distance is greater than or equal to minimum distance
-            if (distance >= minDistance)
+            // Collision only occurs when there's overlap on all axes
+            if (!(collisionX && collisionY && collisionZ))
             {
                 return false;
             }
             
-            // Calculate normal vector (direction from other cube to this cube)
-            normal = (position1 - position2).normalized;
-                
-            // Adjust position to prevent overlap
-            resolvedPosition = position2 + normal * minDistance;
-                
+            // Calculate the overlap on each axis
+            var overlapX = halfSize1 + halfSize2 - Mathf.Abs(position1.x - position2.x);
+            var overlapY = halfSize1 + halfSize2 - Mathf.Abs(position1.y - position2.y);
+            var overlapZ = halfSize1 + halfSize2 - Mathf.Abs(position1.z - position2.z);
+            
+            // Find the minimum overlap axis to determine collision normal
+            if (overlapX <= overlapY && overlapX <= overlapZ)
+            {
+                normal = new Vector3(position1.x > position2.x ? 1 : -1, 0, 0);
+                resolvedPosition = new Vector3(
+                    position2.x + (halfSize1 + halfSize2) * (position1.x > position2.x ? 1 : -1),
+                    position1.y,
+                    position1.z);
+            }
+            else if (overlapY <= overlapZ)
+            {
+                normal = new Vector3(0, position1.y > position2.y ? 1 : -1, 0);
+                resolvedPosition = new Vector3(
+                    position1.x,
+                    position2.y + (halfSize1 + halfSize2) * (position1.y > position2.y ? 1 : -1),
+                    position1.z);
+            }
+            else
+            {
+                normal = new Vector3(0, 0, position1.z > position2.z ? 1 : -1);
+                resolvedPosition = new Vector3(
+                    position1.x,
+                    position1.y,
+                    position2.z + (halfSize1 + halfSize2) * (position1.z > position2.z ? 1 : -1));
+            }
+            
             return true;
         }
         
@@ -96,6 +114,20 @@ namespace Code
         public static Vector3 ReflectVelocity(Vector3 velocity, Vector3 normal)
         {
             return Vector3.Reflect(velocity, normal);
+        }
+        
+        /// <summary>
+        /// Draw boundaries as gizmos in the scene view
+        /// </summary>
+        public static void DrawBoundariesGizmo(Bounds bounds, Color color)
+        {
+            var prevColor = Gizmos.color;
+            Gizmos.color = color;
+
+            // Draw the wireframe cube for the boundaries
+            Gizmos.DrawWireCube(bounds.center, bounds.size);
+            
+            Gizmos.color = prevColor;
         }
     }
 }

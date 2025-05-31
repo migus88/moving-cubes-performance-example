@@ -22,25 +22,9 @@ namespace Code
             Move(Time.deltaTime);
         }
         
-        public void Initialize(Bounds boundaries, float minSpeed, float maxSpeed, Vector3 velocity, SelfMovingCube[] otherCubes)
+        public void Initialize(Bounds boundaries, Vector3 velocity, SelfMovingCube[] otherCubes)
         {
-            // Cache boundary values
             _boundaries = boundaries;
-            _otherCubes = otherCubes;
-            _velocity = velocity;
-            
-            _halfSize = transform.localScale.x * 0.5f;
-        }
-        
-        // Legacy initialization method for backward compatibility
-        public void Initialize(Rect boundariesRect, float minSpeed, float maxSpeed, Vector3 velocity, SelfMovingCube[] otherCubes)
-        {
-            // Convert 2D rect to 3D bounds
-            _boundaries = new Bounds(
-                new Vector3((boundariesRect.xMin + boundariesRect.xMax) * 0.5f, 0, (boundariesRect.yMin + boundariesRect.yMax) * 0.5f),
-                new Vector3(boundariesRect.width, 20, boundariesRect.height)
-            );
-            
             _otherCubes = otherCubes;
             _velocity = velocity;
             _halfSize = transform.localScale.x * 0.5f;

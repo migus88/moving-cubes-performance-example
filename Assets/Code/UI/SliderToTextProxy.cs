@@ -13,11 +13,19 @@ namespace Code.UI
         private void Awake()
         {
             _slider.onValueChanged.AddListener(OnSliderValueChanged);
+            _inputField.onValueChanged.AddListener(OnInputFieldValueChanged);
+        }
+
+        private void OnInputFieldValueChanged(string value)
+        {
+            _slider.SetValueWithoutNotify(float.TryParse(value, out float parsedValue) ? parsedValue : _slider.value);
         }
 
         private void OnSliderValueChanged(float value)
         {
-            _inputField.text = value.ToString("F2");
+            _inputField.text = _slider.wholeNumbers 
+                ? Mathf.RoundToInt(value).ToString() 
+                : value.ToString("F2");
         }
 
         private void OnValidate()

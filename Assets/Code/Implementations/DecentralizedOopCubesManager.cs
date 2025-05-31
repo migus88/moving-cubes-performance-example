@@ -13,7 +13,7 @@ namespace Code.Implementations
             {
                 var cube = cubeComponents[index];
                 var velocity = velocities[index];
-                cube.Initialize(_boundaries, _minSpeed, _maxSpeed, velocity, cubeComponents);
+                cube.Initialize(_boundaries, velocity, cubeComponents);
             }
         }
 
