@@ -56,56 +56,72 @@ namespace Code
         /// Check for collision between two cubes
         /// </summary>
         public static bool CheckCubeCollision(
-            Vector3 position1, Vector3 position2, 
+            Vector3 position1, Vector3 position2,
             float halfSize1, float halfSize2,
             out Vector3 resolvedPosition, out Vector3 normal)
         {
             resolvedPosition = position1;
             normal = Vector3.zero;
-            
-            // Check for axis-aligned bounding box (AABB) collision
+
             var collisionX = Mathf.Abs(position1.x - position2.x) <= (halfSize1 + halfSize2);
             var collisionY = Mathf.Abs(position1.y - position2.y) <= (halfSize1 + halfSize2);
             var collisionZ = Mathf.Abs(position1.z - position2.z) <= (halfSize1 + halfSize2);
-            
-            // Collision only occurs when there's overlap on all axes
+
             if (!(collisionX && collisionY && collisionZ))
             {
                 return false;
             }
-            
-            // Calculate the overlap on each axis
+
             var overlapX = halfSize1 + halfSize2 - Mathf.Abs(position1.x - position2.x);
             var overlapY = halfSize1 + halfSize2 - Mathf.Abs(position1.y - position2.y);
             var overlapZ = halfSize1 + halfSize2 - Mathf.Abs(position1.z - position2.z);
-            
-            // Find the minimum overlap axis to determine collision normal
+
+            resolvedPosition = position1; 
+
             if (overlapX <= overlapY && overlapX <= overlapZ)
             {
-                normal = new Vector3(position1.x > position2.x ? 1 : -1, 0, 0);
-                resolvedPosition = new Vector3(
-                    position2.x + (halfSize1 + halfSize2) * (position1.x > position2.x ? 1 : -1),
-                    position1.y,
-                    position1.z);
+                ResolveAxisCollision(position1.x, position2.x, halfSize1, halfSize2, ref normal, ref resolvedPosition, Vector3.right, 0);
             }
             else if (overlapY <= overlapZ)
             {
-                normal = new Vector3(0, position1.y > position2.y ? 1 : -1, 0);
-                resolvedPosition = new Vector3(
-                    position1.x,
-                    position2.y + (halfSize1 + halfSize2) * (position1.y > position2.y ? 1 : -1),
-                    position1.z);
+                ResolveAxisCollision(position1.y, position2.y, halfSize1, halfSize2, ref normal, ref resolvedPosition, Vector3.up, 1);
             }
             else
             {
-                normal = new Vector3(0, 0, position1.z > position2.z ? 1 : -1);
-                resolvedPosition = new Vector3(
-                    position1.x,
-                    position1.y,
-                    position2.z + (halfSize1 + halfSize2) * (position1.z > position2.z ? 1 : -1));
+                ResolveAxisCollision(position1.z, position2.z, halfSize1, halfSize2, ref normal, ref resolvedPosition, Vector3.forward, 2);
             }
-            
+
             return true;
+        }
+
+        /// <summary>
+        /// Helper method to handle collision resolution for a single axis.
+        /// </summary>
+        private static void ResolveAxisCollision(
+            float p1, float p2, float hs1, float hs2,
+            ref Vector3 currentNormal, 
+            ref Vector3 currentResolvedPos,
+            Vector3 axisNormalDirection, 
+            int axisIndex)
+        {
+            currentNormal = axisNormalDirection * (p1 > p2 ? 1 : -1);
+            
+            // Create a temporary resolved position to modify only the relevant axis
+            var tempResolvedPos = currentResolvedPos;
+
+            if (axisIndex == 0) // X-axis
+            {
+                tempResolvedPos.x = p2 + (hs1 + hs2) * currentNormal.x;
+            }
+            else if (axisIndex == 1) // Y-axis
+            {
+                tempResolvedPos.y = p2 + (hs1 + hs2) * currentNormal.y;
+            }
+            else // Z-axis
+            {
+                tempResolvedPos.z = p2 + (hs1 + hs2) * currentNormal.z;
+            }
+            currentResolvedPos = tempResolvedPos;
         }
         
         /// <summary>
