@@ -6,6 +6,8 @@ namespace Code
     {
         [SerializeField] private LayerMask _targetLayer;
         [SerializeField] private Camera _raycastCamera;
+        [SerializeField] private GameObject _explosionEffect;
+        
         
         private void Start()
         {
@@ -31,6 +33,8 @@ namespace Code
 
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _targetLayer))
             {
+                var explosion = Instantiate(_explosionEffect, hit.point, Quaternion.identity);
+                Destroy(explosion.gameObject, 2f);
                 Destroy(hit.collider.gameObject);
             }
         }

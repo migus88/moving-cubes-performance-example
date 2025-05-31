@@ -2823,6 +2823,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _raycastCamera: {fileID: 961739752}
+  _explosionEffect: {fileID: 1681701451633626942, guid: 8463b0140b4c94a15b3d1e738a51c20b, type: 3}
 --- !u!4 &753272419
 Transform:
   m_ObjectHideFlags: 0
